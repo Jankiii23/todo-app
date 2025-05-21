@@ -18,14 +18,14 @@ app.use(
 
 app.use(express.json());
 
-// app.use(
-//   session({
-//     secret: 'your-secret-key',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { secure: false }, // true for HTTPS production
-//   })
-// );
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // true for HTTPS production
+  })
+);
 
 const server = new ApolloServer({
   typeDefs,
