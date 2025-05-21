@@ -23,7 +23,11 @@ app.use(
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, // true for HTTPS production
+    cookie: { 
+      secure: false, // true for HTTPS production
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 // 24 hours
+    }
   })
 );
 
@@ -32,12 +36,15 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({
     req,
-    userId: req.session.userId || null,
+    userId: req.session?.userId || null,
   }),
 });
 
 await server.start();
-server.applyMiddleware({ app });
+server.applyMiddleware({ 
+  app,
+  cors: false // Important: let Express handle CORS
+});
 
 app.listen({ port: 4000 }, () => {
   console.log(`🚀 Backend running at http://localhost:4000${server.graphqlPath}`);
